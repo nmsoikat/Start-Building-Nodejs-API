@@ -1,12 +1,23 @@
-const { authService } = require('../../services')
+const { authService } = require('../../services');
+const { APISuccessResponse } = require('../../utils');
+const { validationResult } = require('express-validator')
 
 const signup = async (req, res, next) => {
+  try {
+    const { username, email, password } = req.body;
+    const vresult = validationResult(req)
+    if(vresult.errors.length){
+      console.log(vresult.errors);
+      throw "vlidation error"
+    }
 
-  const { username, email, password } = req.body;
-  
-  const newUser = await authService.signup({ username, email, password })
+    const newUser = await authService.signup({ username, email, password })
 
-  res.json(newUser)
+    return APISuccessResponse(res, newUser)
+  } catch (error) {
+
+    console.log(error);
+  }
 }
 
 

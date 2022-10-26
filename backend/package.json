@@ -18,8 +18,13 @@
   },
   "homepage": "https://github.com/nmsoikat/Start-Building-Nodejs-API#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-validator": "^6.14.2",
     "mongoose": "^6.6.7"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0"
   }
 }
