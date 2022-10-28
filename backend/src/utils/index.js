@@ -16,9 +16,9 @@ module.exports.APISuccessResponse = (res, data) => {
 }
 
 module.exports.FormatData = (data) => {
-  if(data){
+  if (data) {
     return data;
-  }else{
+  } else {
     console.log(error);
   }
 }

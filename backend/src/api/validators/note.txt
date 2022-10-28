@@ -1,0 +1,18 @@
+#notEmpty() it's means: 
+isExist() -> notEmpty()
+
+#isEmail() it's means:
+isExist() -> notEmpty() -> isEmail()
+
+
+#Express validator not working ?
+Checking Case 1:
+  app.user(express.json())
+  note: express validator need json object
+
+Checking Case 2:
+  body('name').exist() //fields may not be undefined
+  or
+  body('name').exist({checkNull:true}) //fields with null values will not exist
+  or
+  body('name').exist({checkFalsy:true}) //fields with falsy values (eg "", 0, false, null) will also not exist
