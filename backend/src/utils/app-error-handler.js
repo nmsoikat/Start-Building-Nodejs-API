@@ -1,6 +1,4 @@
 const sendErrorDev = (err, res) => {
-  console.log(err);
-
   res.status(err.statusCode).send({
     status: err.status,
     message: err.message,
@@ -10,14 +8,12 @@ const sendErrorDev = (err, res) => {
 }
 
 const sendErrorProd = (err, res) => {
-  // console.log(err);
-
-  if(err.isOperational){
+  if (err.isOperational) {
     res.status(err.statusCode).send({
       status: err.status,
       message: err.message,
     })
-  }else{
+  } else {
     res.status(500).send({
       status: "fail",
       message: "Something went very wrong!"
@@ -26,17 +22,18 @@ const sendErrorProd = (err, res) => {
 }
 
 
-module.exports.ErrorHandler = async (err, req, res, next) => {  
-  // we will wrap all code using try-case block. so status code will be there
-  // err.statusCode = err.statusCode || 500,
-  // err.status = err.status || 'error'
+module.exports = async (err, req, res, next) => {
+  //if unknown error 
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || 'error'
 
   if (process.env.NODE_ENV === 'development') {
     console.log(err);
     sendErrorDev(err, res)
   } else if (process.env.NODE_ENV === 'production') {
+    console.log(err);
     const copyError = { ...err }
-    
+
     sendErrorProd(copyError, res)
   }
 }

@@ -5,23 +5,46 @@ class AppError extends Error {
     super(message)
 
     this.name = "App Error"
-    this.statusCode = statusCode;
     this.status = 'fail';
+    this.statusCode = statusCode || STATUS_CODE.BAD_REQUEST;
     this.isOperational = true;
 
     Error.captureStackTrace(this, this.constructor)
   }
 }
 
+class ValidationError extends AppError {
+  constructor(errors) {
+    // console.log(errors);
+
+    let formatErrors = ''
+    for(let err of errors){
+      formatErrors += `${err.param}:${err.msg} \n `
+      //username:Please provide username\n password:Please provide password \n 
+      //split by \n for proper message
+    }
+
+    super(formatErrors)
+
+    this.name = "Validation Error"
+    this.statusCode = STATUS_CODE.UN_PROCESSABLE_ENTITY;
+  }
+}
+
 class ServerError extends AppError {
-  constructor() {
-    super()
+  constructor(message) {
+    super(message)
+
     this.name = "Internal Error"
+    this.statusCode = STATUS_CODE.INTERNAL_ERROR;
+
     this.isOperational = false;
   }
 }
 
+
 module.exports = {
   AppError,
-  ServerError
+  ServerError,
+  ValidationError
 }

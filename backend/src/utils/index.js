@@ -1,4 +1,6 @@
 const bcrypt = require('bcryptjs')
+const { STATUS_CODE } = require('../config/constant')
+const { AppError } = require('./app-error')
 
 module.exports.GenerateSalt = async () => {
   return await bcrypt.genSalt()
@@ -9,16 +11,16 @@ module.exports.GenerateHashedPassword = async (password, salt) => {
 }
 
 module.exports.APISuccessResponse = (res, data) => {
-  res.status(200).json({
+  res.status(STATUS_CODE.OK).json({
     status: 'success',
     data
   })
 }
 
-module.exports.FormatData = (data) => {
+module.exports.CheckDataIsEmpty = (data) => {
   if (data) {
     return data;
   } else {
-    console.log(error);
+    throw new AppError("Document Not Found", STATUS_CODE.NOT_FOUND)
   }
 }

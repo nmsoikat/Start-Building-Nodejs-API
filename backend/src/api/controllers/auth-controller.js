@@ -1,5 +1,6 @@
 const { authService } = require('../../services');
-const { APISuccessResponse, FormatExpressValidatorError } = require('../../utils');
+const { APISuccessResponse } = require('../../utils');
+const { ServerError } = require('../../utils/app-error');
 
 const signup = async (req, res, next) => {
   try {
@@ -9,8 +10,7 @@ const signup = async (req, res, next) => {
 
     return APISuccessResponse(res, newUser)
   } catch (error) {
-
-    console.log(error);
+    return next(new ServerError(error.message))
   }
 }
 

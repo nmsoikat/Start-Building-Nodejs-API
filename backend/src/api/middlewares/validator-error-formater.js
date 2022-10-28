@@ -1,14 +1,19 @@
-const { validationResult } = require('express-validator')
+const { validationResult } = require('express-validator');
+const { ServerError, ValidationError } = require('../../utils/app-error');
 
 const formatExpressValidatorError = (req, res, next) => {
-  const vresult = validationResult(req)
+  try {
+    const result = validationResult(req)
 
-  if (vresult.errors.length) {
-    console.log(vresult.errors);
-    throw "vlidation error"
+    if (result.errors.length) {
+      return next(new ValidationError(result.array()))
+    }
+  
+    next();
+  } catch (error) {
+    throw new ServerError("Validation Result Checking Fail")
   }
 
-  console.log(vresult);
 }
 
 module.exports = {

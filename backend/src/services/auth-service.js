@@ -1,5 +1,6 @@
 const { userRepository } = require('../database/repository');
-const { FormatData, GenerateSalt, GenerateHashedPassword } = require('../utils');
+const { CheckDataIsEmpty, GenerateSalt, GenerateHashedPassword } = require('../utils');
+const { ServerError } = require('../utils/app-error');
 
 const signup = async (data) => {
   try {
@@ -11,9 +12,9 @@ const signup = async (data) => {
 
     const user = await userRepository.createUser({ username, email, password: passwordHashed })
 
-    return FormatData(user);
+    return CheckDataIsEmpty(user);
   } catch (error) {
-    console.log(error);
+    throw new ServerError(error.message)
   }
 }
 

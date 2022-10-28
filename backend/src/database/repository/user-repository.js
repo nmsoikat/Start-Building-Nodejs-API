@@ -1,11 +1,11 @@
+const { ServerError } = require('../../utils/app-error');
 const { User } = require('../models')
 
 const createUser = async (data) => {
   try {
-    const user = await User.create(data);
-    return user
+    return await User.create(data);
   } catch (error) {
-    console.log(error);
+    throw new ServerError("Mongodb: User create time error")
   }
 }
 
