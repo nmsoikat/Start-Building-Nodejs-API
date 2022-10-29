@@ -1,6 +1,8 @@
+const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const { STATUS_CODE } = require('../config/constant')
 const { AppError } = require('./app-error')
+
 
 module.exports.GenerateSalt = async () => {
   return await bcrypt.genSalt()
@@ -8,6 +10,14 @@ module.exports.GenerateSalt = async () => {
 
 module.exports.GenerateHashedPassword = async (password, salt) => {
   return await bcrypt.hash(password, salt)
+}
+
+module.exports.CompareHashedPassword = async (password, hashedPassword) => {
+  return await bcrypt.compare(password, hashedPassword)
+}
+
+module.exports.GenerateSignature = async (payload) => {
+  return await jwt.sign(payload, process.env.APP_SECRET, {expiresIn: process.env.LOGIN_EXPIRE})
 }
 
 module.exports.APISuccessResponse = (res, data) => {
