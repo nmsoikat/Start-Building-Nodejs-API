@@ -19,7 +19,7 @@ const signup = async (data) => {
   }
 }
 
-const login = async (data) => {
+const login = async (res, data) => {
   const { email, password } = data;
 
   const user = await userRepository.findOneUserWithPass({ email })
@@ -28,11 +28,19 @@ const login = async (data) => {
     throw new AppError("Incorrect email or password", STATUS_CODE.UN_AUTHORIZED)
   }
 
-  user.password = undefined; //skip password filed
+  user.password = undefined; //remove password filed from output
 
   const token = await GenerateSignature({ id: user._id })
 
-  //todo: set http cookie
+  //set cookie in response //http-only:true
+  const cookieOptions = {
+    httpOnly: true,
+    expires: new Date(Date.now() + process.env.LOGIN_EXPIRE * 24 * 60 * 60 * 1000)
+  }
+  if(process.env.NODE_ENV === 'production'){
+    cookieOptions.secure = true
+  }
+  res.cookie('jwt-token', token, cookieOptions)
 
   return { user, token };
 }

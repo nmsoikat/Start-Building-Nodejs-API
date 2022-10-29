@@ -19,7 +19,7 @@ const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    const loginUser = await authService.login({email, password})
+    const loginUser = await authService.login(res, {email, password})
 
     return APISuccessResponse(res, loginUser)
   } catch (error) {

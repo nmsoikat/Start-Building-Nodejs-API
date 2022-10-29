@@ -4,8 +4,8 @@ const { User } = require('../models')
 module.exports.createUser = async (data) => {
   try {
     const user =  await User.create(data);
-    user.password = undefined; //skip password filed
-    return user; //if now use user.save() // password filed will empty
+    user.password = undefined; //remove password from the output
+    return user; //if now use user.save() // password filed will deleted
   } catch (error) {
     throw new ServerError(error.message)
   }

@@ -17,7 +17,7 @@ module.exports.CompareHashedPassword = async (password, hashedPassword) => {
 }
 
 module.exports.GenerateSignature = async (payload) => {
-  return await jwt.sign(payload, process.env.APP_SECRET, {expiresIn: process.env.LOGIN_EXPIRE})
+  return await jwt.sign(payload, process.env.APP_SECRET, {expiresIn: `${process.env.LOGIN_EXPIRE}d`})
 }
 
 module.exports.APISuccessResponse = (res, data) => {
