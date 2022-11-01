@@ -1,16 +1,15 @@
 const { authService } = require('../../services');
 const { APISuccessResponse } = require('../../utils');
-const { ServerError } = require('../../utils/app-error');
 
 const signup = async (req, res, next) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, uniqueTest } = req.body;
 
-    const newUser = await authService.signup({ username, email, password })
+    const newUser = await authService.signup({ username, email, password, uniqueTest })
 
     return APISuccessResponse(res, newUser)
   } catch (error) {
-    return next(new ServerError(error.message))
+    return next(error)
   }
 }
 
@@ -23,7 +22,7 @@ const login = async (req, res, next) => {
 
     return APISuccessResponse(res, loginUser)
   } catch (error) {
-    return next(new ServerError(error.message))
+    return next(error)
   }
 }
 

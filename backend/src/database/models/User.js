@@ -4,12 +4,18 @@ const UserSchema = new Schema({
   username: String,
   email: {
     type: String,
-    require: true
+    unique: true,
+    required: true,
   },
   password: {
     type: String,
-    require: true,
+    required: true,
     select: false
+  },
+  uniqueTest: {
+    type: String,
+    required: true,
+    unique: true
   }
 })
 

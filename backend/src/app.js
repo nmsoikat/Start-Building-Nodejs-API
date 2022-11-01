@@ -5,11 +5,11 @@ const mongoSanitize = require('express-mongo-sanitize')
 const xssClean = require('xss-clean')
 const hpp = require('hpp')
 
-const app = express()
-
 const { routes } = require('./api')
 const AppErrorHandler = require('./utils/app-error-handler')
 const { AppError } = require('./utils/app-error')
+
+const app = express()
 
 //Global Middleware
 app.use(helmet())//Set Security HTTP headers
@@ -34,5 +34,7 @@ app.all("*", (req, res, next) => {
   next(new AppError(`Can not find ${req.originalUrl} on this server`, 404))
 })
 
+//Global Error Handler
 app.use(AppErrorHandler)
+
 module.exports = app;

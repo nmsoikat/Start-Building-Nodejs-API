@@ -17,14 +17,14 @@ class ValidationError extends AppError {
   constructor(errors) {
     // console.log(errors);
 
-    let formatErrors = ''
+    let formattedErrors = ''
     for(let err of errors){
-      formatErrors += `${err.param}:${err.msg} \n `
-      //username:Please provide username\n password:Please provide password \n 
+      formattedErrors += `${err.param}:${err.msg} \n `
+      //'username:Please provide username \n password:Please provide password \n '
       //split by \n for proper message
     }
 
-    super(formatErrors)
+    super(formattedErrors)
 
     this.name = "Validation Error"
     this.statusCode = STATUS_CODE.UN_PROCESSABLE_ENTITY;
@@ -32,13 +32,15 @@ class ValidationError extends AppError {
 }
 
 class ServerError extends AppError {
-  constructor(message) {
+  constructor(error, message="Internal Server Error") {
     super(message)
 
     this.name = "Internal Error"
     this.statusCode = STATUS_CODE.INTERNAL_ERROR;
 
     this.isOperational = false;
+
+    console.log("Server Error Log:",error);
   }
 }
 
