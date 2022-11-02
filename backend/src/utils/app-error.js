@@ -39,8 +39,6 @@ class ServerError extends AppError {
     this.statusCode = STATUS_CODE.INTERNAL_ERROR;
 
     this.isOperational = false;
-
-    console.log("Server Error Log:",error);
   }
 }
 

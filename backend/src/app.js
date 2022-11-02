@@ -28,6 +28,7 @@ if (process.env.NODE_ENV === 'development') {
 
 //Routes
 app.use('/api/v1/auth', routes.authRoute)
+app.use('/api/v1/user', routes.userRoute)
 
 //Not Found Route //all http verbs and // any route *
 app.all("*", (req, res, next) => {

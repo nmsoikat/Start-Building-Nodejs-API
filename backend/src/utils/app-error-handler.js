@@ -17,7 +17,7 @@ const sendErrorProd = (err, res) => {
       message: err.message,
     })
   } else {
-    console.log('#Generic Error Log:',err);
+    console.log('#PROD-Generic-Error-Log:',err);
     
     res.status(STATUS_CODE.INTERNAL_ERROR).send({
       status: "fail",
@@ -59,22 +59,34 @@ const validationErrorDB = (err) => {
   }
 }
 
+const jsonWebTokenError = (err) => {
+  try {
+    return new AppError("Invalid token, Please login again", STATUS_CODE.UN_AUTHORIZED)
+  } catch (error) {
+    return error
+  }
+}
+
 module.exports = async (err, req, res, next) => {
   //if unknown error 
   err.statusCode = err.statusCode || STATUS_CODE.INTERNAL_ERROR;
   err.status = err.status || 'error'
 
   if (process.env.NODE_ENV === 'development') {
-    console.log(err);
+    console.log("#Dev-Log:",err);
     sendErrorDev(err, res)
   } else if (process.env.NODE_ENV === 'production') {
-    console.log("#ERROR-LOG:", err);
-
+    console.log("#PROD-ERROR-LOG:", err);
+    
     let copyError = { ...err }
+    copyError.name = err.name;
+    copyError.message = err.message;
+
+    // console.log("#PROD-ERROR-LOG-Name-Message:", copyError.name, copyError.message);
 
     // Three mongoose error //make as operational err for production
     //1) _id value is invalid
-    if (err.name === "CastError") {
+    if (copyError.name === "CastError") {
       copyError = handleCastErrorDB(copyError)
     }
 
@@ -84,8 +96,13 @@ module.exports = async (err, req, res, next) => {
     }
 
     //3) db validation failed
-    if (err.name === "ValidationError") {
+    if (copyError.name === "ValidationError") {
       copyError = validationErrorDB(copyError)
+    }
+
+    //JWT
+    if (copyError.name === "JsonWebTokenError") {
+      copyError = jsonWebTokenError(copyError)
     }
 
 

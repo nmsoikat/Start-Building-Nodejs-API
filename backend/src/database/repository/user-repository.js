@@ -10,6 +10,14 @@ module.exports.createUser = async (data) => {
   }
 }
 
+module.exports.findUser = async (query={}) => {
+  try {
+    return await User.find(query)
+  } catch (error) {
+    throw error
+  }
+}
+
 module.exports.findOneUser = async (query) => {
   try {
     return await User.findOne(query)

@@ -11,7 +11,7 @@ const formatExpressValidatorError = (req, res, next) => {
   
     next();
   } catch (error) {
-    throw new ServerError("Validation Result Checking Fail")
+    throw new ServerError(error, "Validation Result Checking Fail")
   }
 
 }
