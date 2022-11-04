@@ -3,23 +3,23 @@ const { findOneUser } = require('../../database/repository/user-repository');
 const { ServerError } = require('../../utils/app-error');
 
 const commonSchema = [
-  body('email')
-  .isEmail().withMessage("Please provide valid email address!")
-  .custom(async (value) => {
-    try {
-      if (await findOneUser({ email: value })) {
-        throw new Error("Email already in use")
-      }
-      return true;
-    } catch (error) {
-      throw new ServerError(error, error.message)
-    }
-  }),
   body('password').isLength({ min: 6 }).withMessage("Password will be at least 6 character long"),
 ]
 
 const SignupValidatorSchema = [
   ...commonSchema,
+  body('email')
+    .isEmail().withMessage("Please provide valid email address!")
+    .custom(async (value) => {
+      try {
+        if (await findOneUser({ email: value })) {
+          throw new Error("Email already in use")
+        }
+        return true;
+      } catch (error) {
+        throw new ServerError(error, error.message)
+      }
+    }),
   body('username').notEmpty().withMessage("Please provide username"),
   body('passwordConfirm').custom((value, { req }) => {
     if (value !== req.body.password) {
@@ -31,7 +31,9 @@ const SignupValidatorSchema = [
 ]
 
 const LoginValidatorSchema = [
-  ...commonSchema
+  ...commonSchema,
+  body('email')
+    .isEmail().withMessage("Please provide valid email address!")
 ]
 
 module.exports = {

@@ -12,11 +12,21 @@ const UserSchema = new Schema({
     required: true,
     select: false
   },
-  uniqueTest: {
-    type: String,
-    required: true,
-    unique: true
+  passwordChangedAt: {
+    type: Date
   }
 })
+
+UserSchema.methods.checkChangePasswordAfter = function (jwtIat) {
+  if(this.passwordChangedAt){
+    // jwtIat as second by default
+    const passwordChangedAtAsSecond = parseInt(this.passwordChangedAt.getTime() / 1000, 10)
+
+    return jwtIat < passwordChangedAtAsSecond
+  }
+
+  //false means, Password dose not changed
+  return false
+}
 
 module.exports = model("User", UserSchema)

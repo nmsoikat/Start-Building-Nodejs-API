@@ -3,9 +3,9 @@ const { APISuccessResponse } = require('../../utils');
 
 const signup = async (req, res, next) => {
   try {
-    const { username, email, password, uniqueTest } = req.body;
+    const { username, email, password } = req.body;
 
-    const newUser = await authService.signup({ username, email, password, uniqueTest })
+    const newUser = await authService.signup({ username, email, password })
 
     return APISuccessResponse(res, newUser)
   } catch (error) {

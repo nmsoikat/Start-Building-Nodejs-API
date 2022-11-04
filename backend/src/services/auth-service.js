@@ -5,13 +5,13 @@ const { AppError } = require('../utils/app-error');
 
 const signup = async (data) => {
   try {
-    const { username, email, password, uniqueTest } = data;
+    const { username, email, password } = data;
 
     const salt = await GenerateSalt()
 
     const passwordHashed = await GenerateHashedPassword(password, salt)
 
-    const user = await userRepository.createUser({ username, email, password: passwordHashed, uniqueTest })
+    const user = await userRepository.createUser({ username, email, password: passwordHashed })
 
     return CheckDataIsEmpty(user);
   } catch (error) {

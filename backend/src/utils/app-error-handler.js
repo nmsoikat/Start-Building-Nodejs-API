@@ -17,8 +17,8 @@ const sendErrorProd = (err, res) => {
       message: err.message,
     })
   } else {
-    console.log('#PROD-Generic-Error-Log:',err);
-    
+    console.log('#PROD-Generic-Error-Log:', err);
+
     res.status(STATUS_CODE.INTERNAL_ERROR).send({
       status: "fail",
       message: "Something went very wrong!"
@@ -47,7 +47,7 @@ const validationErrorDB = (err) => {
     const errors = Object.entries(err.errors)
 
     let formattedErrors = ''
-    for(let [key, value] of errors){
+    for (let [key, value] of errors) {
       formattedErrors += `${key}:${value.message.split(`\`${key}\``)[1]} \n `
       //'username:Please provide username \n password:Please provide password \n '
       //split by \n for proper message
@@ -60,11 +60,11 @@ const validationErrorDB = (err) => {
 }
 
 const jsonWebTokenError = (err) => {
-  try {
-    return new AppError("Invalid token, Please login again", STATUS_CODE.UN_AUTHORIZED)
-  } catch (error) {
-    return error
-  }
+  return new AppError("Invalid token! Please login again", STATUS_CODE.UN_AUTHORIZED)
+}
+
+const jsonWebTokenExpiredError = (err) => {
+  return new AppError("Your token has expired! Please login again", STATUS_CODE.UN_AUTHORIZED)
 }
 
 module.exports = async (err, req, res, next) => {
@@ -73,11 +73,11 @@ module.exports = async (err, req, res, next) => {
   err.status = err.status || 'error'
 
   if (process.env.NODE_ENV === 'development') {
-    console.log("#Dev-Log:",err);
+    console.log("#Dev-Log:", err);
     sendErrorDev(err, res)
   } else if (process.env.NODE_ENV === 'production') {
     console.log("#PROD-ERROR-LOG:", err);
-    
+
     let copyError = { ...err }
     copyError.name = err.name;
     copyError.message = err.message;
@@ -100,9 +100,14 @@ module.exports = async (err, req, res, next) => {
       copyError = validationErrorDB(copyError)
     }
 
-    //JWT
+    //JWT Invalid
     if (copyError.name === "JsonWebTokenError") {
-      copyError = jsonWebTokenError(copyError)
+      copyError = jsonWebTokenError()
+    }
+
+    //JWT Expired
+    if (copyError.name === "TokenExpiredError") {
+      copyError = jsonWebTokenExpiredError()
     }
 
 
