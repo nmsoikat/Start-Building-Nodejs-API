@@ -11,11 +11,11 @@ process.on('uncaughtException', (err) => {
 
 const app = require('./app')
 const port = process.env.PORT || 8000
-
+let serverListen = null
 connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("Database connected!");
-    app.listen(port, () => {
+    serverListen = app.listen(port, () => {
       console.log("Server running on port:", port);
     })
   })
@@ -24,12 +24,10 @@ connect(process.env.MONGODB_URI)
     console.log(err);
   })
 
-
 process.on('unhandledRejection', (err) => {
   console.log("UNHANDLED REJECTION: SHUTING DOWN...");
   console.log(err.name, err.message);
-
-  app.close(() => {
+  serverListen.close(() => {
     //0 -> success
     //1 -> uncaughtException
     process.exit(1)
