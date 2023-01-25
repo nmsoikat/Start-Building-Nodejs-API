@@ -1,4 +1,4 @@
-const { STATUS_CODE } = require("../config/constant")
+const { StatusCode } = require("../constant")
 const { AppError } = require("./app-error")
 
 const sendErrorDev = (err, res) => {
@@ -19,7 +19,7 @@ const sendErrorProd = (err, res) => {
   } else {
     console.log('#PROD-Generic-Error-Log:', err);
 
-    res.status(STATUS_CODE.INTERNAL_ERROR).send({
+    res.status(StatusCode.INTERNAL_ERROR).send({
       status: "fail",
       message: "Something went very wrong!"
     })
@@ -29,14 +29,14 @@ const sendErrorProd = (err, res) => {
 // production error handlers
 const handleCastErrorDB = (err) => {
   const message = `Invalid ${err.path}: ${err.value}`
-  return new AppError(message, STATUS_CODE.BAD_REQUEST)
+  return new AppError(message, StatusCode.BAD_REQUEST)
 }
 
 const handleDuplicateFieldErrorDB = (err) => {
   try {
     const value = Object.entries(err.keyValue)[0][1]
     const message = `Duplicate field value: ${value}. Please use another value!`
-    return new AppError(message, STATUS_CODE.BAD_REQUEST)
+    return new AppError(message, StatusCode.BAD_REQUEST)
   } catch (error) {
     return error
   }
@@ -53,23 +53,23 @@ const validationErrorDB = (err) => {
       //split by \n for proper message
     }
 
-    return new AppError(formattedErrors, STATUS_CODE.UN_PROCESSABLE_ENTITY)
+    return new AppError(formattedErrors, StatusCode.UN_PROCESSABLE_ENTITY)
   } catch (error) {
     return error
   }
 }
 
 const jsonWebTokenError = (err) => {
-  return new AppError("Invalid token! Please login again", STATUS_CODE.UN_AUTHORIZED)
+  return new AppError("Invalid token! Please login again", StatusCode.UN_AUTHORIZED)
 }
 
 const jsonWebTokenExpiredError = (err) => {
-  return new AppError("Your token has expired! Please login again", STATUS_CODE.UN_AUTHORIZED)
+  return new AppError("Your token has expired! Please login again", StatusCode.UN_AUTHORIZED)
 }
 
 module.exports = async (err, req, res, next) => {
   //if unknown error 
-  err.statusCode = err.statusCode || STATUS_CODE.INTERNAL_ERROR;
+  err.statusCode = err.statusCode || StatusCode.INTERNAL_ERROR;
   err.status = err.status || 'error'
 
   if (process.env.NODE_ENV === 'development') {

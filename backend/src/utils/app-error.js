@@ -1,4 +1,4 @@
-const { STATUS_CODE } = require("../config/constant");
+const { StatusCode } = require("../constant");
 
 class AppError extends Error {
   constructor(message, statusCode) {
@@ -6,7 +6,7 @@ class AppError extends Error {
 
     this.name = "App Error"
     this.status = 'fail';
-    this.statusCode = statusCode || STATUS_CODE.BAD_REQUEST;
+    this.statusCode = statusCode || StatusCode.BAD_REQUEST;
     this.isOperational = true;
 
     Error.captureStackTrace(this, this.constructor)
@@ -18,7 +18,7 @@ class ValidationError extends AppError {
     // console.log(errors);
 
     let formattedErrors = ''
-    for(let err of errors){
+    for (let err of errors) {
       formattedErrors += `${err.param}:${err.msg} \n `
       //'username:Please provide username \n password:Please provide password \n '
       //split by \n for proper message
@@ -27,16 +27,16 @@ class ValidationError extends AppError {
     super(formattedErrors)
 
     this.name = "Validation Error"
-    this.statusCode = STATUS_CODE.UN_PROCESSABLE_ENTITY;
+    this.statusCode = StatusCode.UN_PROCESSABLE_ENTITY;
   }
 }
 
 class ServerError extends AppError {
-  constructor(error, message="Internal Server Error") {
+  constructor(error, message = "Internal Server Error") {
     super(message)
 
     this.name = "Internal Error"
-    this.statusCode = STATUS_CODE.INTERNAL_ERROR;
+    this.statusCode = StatusCode.INTERNAL_ERROR;
 
     this.isOperational = false;
   }

@@ -1,4 +1,4 @@
-const { STATUS_CODE } = require('../config/constant');
+const { StatusCode } = require('../constant');
 const { UserRepository } = require('../database/repository');
 const { CheckDataIsEmpty, GenerateSalt, GenerateHashedPassword, CompareHashedPassword, GenerateSignature } = require('../utils');
 const { AppError } = require('../utils/app-error');
@@ -23,7 +23,7 @@ const AuthService = {
     const user = await UserRepository.findOneUserWithPass({ email })
 
     if (!user || !(await CompareHashedPassword(password, user.password))) {
-      throw new AppError("Incorrect email or password", STATUS_CODE.UN_AUTHORIZED)
+      throw new AppError("Incorrect email or password", StatusCode.UN_AUTHORIZED)
     }
 
     user.password = undefined; //remove password filed from output

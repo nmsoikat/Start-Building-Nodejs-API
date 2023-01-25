@@ -2,7 +2,7 @@ const { promisify } = require('util')
 const jwt = require('jsonwebtoken');
 const { AppError } = require('../../utils/app-error');
 const { UserRepository } = require("../../database/repository");
-const { STATUS_CODE } = require('../../config/constant');
+const { StatusCode } = require('../../constant');
 
 module.exports = async (req, res, next) => {
   try {
@@ -18,16 +18,16 @@ module.exports = async (req, res, next) => {
 
     //Verify
     const decoded = await promisify(jwt.verify)(token, process.env.APP_SECRET)
-    
+
     //Check user still exist
     const currentUser = await UserRepository.findUserById(decoded.id)
-    if(!currentUser){
-      return next(new AppError('The user belonging to this token dose no longer exist.', STATUS_CODE.UN_AUTHORIZED))
+    if (!currentUser) {
+      return next(new AppError('The user belonging to this token dose no longer exist.', StatusCode.UN_AUTHORIZED))
     }
 
     //Check user changed password after the token was issued
-    if(currentUser.checkChangePasswordAfter(decoded.iat)){
-      return next(new AppError('User recently changed password! Please login again.', STATUS_CODE.UN_AUTHORIZED))
+    if (currentUser.checkChangePasswordAfter(decoded.iat)) {
+      return next(new AppError('User recently changed password! Please login again.', StatusCode.UN_AUTHORIZED))
     }
 
 
