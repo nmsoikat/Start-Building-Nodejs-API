@@ -1,23 +1,27 @@
 const { User } = require('../models')
 
-module.exports.createUser = async (data) => {
-  const user = await User.create(data);
-  user.password = undefined; //remove password from the output
-  return user; //if now use user.save() // password filed will deleted
+const UserRepository = {
+  async createUser(data) {
+    const user = await User.create(data);
+    user.password = undefined; //remove password from the output
+    return user; //if now use user.save() // password filed will deleted
+  },
+
+  async findUser(query = {}) {
+    return await User.find(query)
+  },
+
+  async findOneUser(query) {
+    return await User.findOne(query)
+  },
+
+  async findOneUserWithPass(query) {
+    return await User.findOne(query).select('+password')
+  },
+
+  async findUserById(id) {
+    return await User.findById(id)
+  }
 }
 
-module.exports.findUser = async (query = {}) => {
-  return await User.find(query)
-}
-
-module.exports.findOneUser = async (query) => {
-  return await User.findOne(query)
-}
-
-module.exports.findOneUserWithPass = async (query) => {
-  return await User.findOne(query).select('+password')
-}
-
-module.exports.findUserById = async (id) => {
-  return await User.findById(id)
-}
+module.exports = UserRepository

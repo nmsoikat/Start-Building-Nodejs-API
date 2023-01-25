@@ -1,5 +1,5 @@
 const { body } = require('express-validator')
-const { findOneUser } = require('../../database/repository/user-repository');
+const { UserRepository } = require('../../database/repository');
 const { ServerError } = require('../../utils/app-error');
 
 const commonSchema = [
@@ -12,7 +12,7 @@ const SignupValidatorSchema = [
     .isEmail().withMessage("Please provide valid email address!")
     .custom(async (value) => {
       try {
-        if (await findOneUser({ email: value })) {
+        if (await UserRepository.findOneUser({ email: value })) {
           throw new Error("Email already in use")
         }
         return true;

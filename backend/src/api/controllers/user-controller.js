@@ -1,15 +1,12 @@
-const { userService } = require("../../services")
+const { UserService } = require("../../services")
 const { APISuccessResponse } = require("../../utils")
 
-const getAllUser = async (req, res, next) => {
+exports.getAllUser = async (req, res, next) => {
   try {
-    const users = await userService.getAllUser()
+    const users = await UserService.getAllUser()
+    
     APISuccessResponse(res, users)
   } catch (error) {
     next(error)
   }
-}
-
-module.exports = {
-  getAllUser
 }

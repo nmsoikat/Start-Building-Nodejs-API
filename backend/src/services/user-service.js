@@ -1,13 +1,10 @@
-const { userRepository } = require("../database/repository")
+const { UserRepository } = require("../database/repository")
 
-const getAllUser = async () => {
-  try {
-    return userRepository.findUser()
-  } catch (error) {
-    throw error
+const UserService = {
+  async getAllUser(){
+    return UserRepository.findUser()
   }
 }
 
-module.exports = {
-  getAllUser
-}
+
+module.exports = UserService

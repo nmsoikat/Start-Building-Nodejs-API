@@ -1,3 +1,3 @@
 module.exports = {
-  userRepository: require('./user-repository')
+  UserRepository: require('./user-repository')
 }
