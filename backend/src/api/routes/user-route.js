@@ -1,9 +1,19 @@
 const router = require('express').Router()
-const userController = require('../controllers/user-controller');
+const { UserService } = require("../../services")
+const { APISuccessResponse } = require("../../utils")
 const protect = require('../middlewares/protect');
-const {UserPath} = require('./app-route-path')
+const catchAsync = require('../../utils/catch-async');
 
-router.route(UserPath.USER).get(protect, userController.getAllUser)
+router
+  .route('/')
+  .get(
+    protect,
+    catchAsync(async (req, res, next) => {
+      const users = await UserService.getAllUser(req)
+
+      APISuccessResponse(res, users)
+    })
+  )
 
 
 module.exports = router;

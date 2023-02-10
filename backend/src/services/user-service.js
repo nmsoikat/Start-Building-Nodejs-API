@@ -1,8 +1,8 @@
 const { UserRepository } = require("../database/repository")
 
 const UserService = {
-  async getAllUser(){
-    return UserRepository.findUser()
+  async getAllUser(req) {
+    return await UserRepository.findUser()
   }
 }
 

@@ -10,7 +10,7 @@ process.on('uncaughtException', (err) => {
 })
 
 const app = require('./app')
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 1000
 let serverListen = null
 connect(process.env.MONGODB_URI)
   .then(() => {

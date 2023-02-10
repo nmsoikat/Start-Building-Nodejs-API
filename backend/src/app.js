@@ -4,6 +4,7 @@ const helmet = require('helmet')
 const mongoSanitize = require('express-mongo-sanitize')
 const xssClean = require('xss-clean')
 const hpp = require('hpp')
+const cors = require('cors');
 
 const { routes } = require('./api')
 const AppErrorHandler = require('./utils/app-error-handler')
@@ -12,7 +13,8 @@ const { AppError } = require('./utils/app-error')
 const app = express()
 
 //Global Middleware
-app.use(helmet())//Set Security HTTP headers
+app.use(helmet({ crossOriginResourcePolicy: false }))//Set Security HTTP headers
+//app.use(helmet({ crossOriginResourcePolicy: false }))
 app.use(mongoSanitize())// Input Data Sanitization against NoSQL Query Injection
 app.use(xssClean())// Input Data Sanitization against XSS //clean malicious html or script in html code //add before any route
 app.use(hpp({
@@ -26,9 +28,15 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('tiny'))
 }
 
+app.use(cors({
+  origin: [
+    "http://localhost:3000"
+  ], credentials: true //cookie option httpOnly true
+}));
+
 //Routes
-app.use('/api/v1/auth', routes.authRoute)
-app.use('/api/v1/user', routes.userRoute)
+app.use('/api/v1/auth', routes.AuthRoute)
+app.use('/api/v1/user', routes.UserRoute)
 
 //Not Found Route //all http verbs and // any route *
 app.all("*", (req, res, next) => {

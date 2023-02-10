@@ -12,7 +12,7 @@
     "url": "git+https://github.com/nmsoikat/Start-Building-Nodejs-API.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Nur Mohammad Soikat",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/nmsoikat/Start-Building-Nodejs-API/issues"
@@ -31,6 +31,7 @@
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.20"
   }
 }
