@@ -6,9 +6,9 @@ const xssClean = require('xss-clean')
 const hpp = require('hpp')
 const cors = require('cors');
 
-const { routes } = require('./api')
-const AppErrorHandler = require('./utils/app-error-handler')
-const { AppError } = require('./utils/app-error')
+const { routes } = require('./src/api')
+const AppErrorHandler = require('./src/utils/app-error-handler')
+const { AppError } = require('./src/utils/app-error')
 
 const app = express()
 
