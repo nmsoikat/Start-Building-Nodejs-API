@@ -1,8 +1,8 @@
-const { User } = require('../models')
+const db = require('../db/models')
 
 const UserRepository = {
   async createUser(data) {
-    const user = await User.create(data);
+    const user = await db.User.create(data);
     user.password = undefined; //remove password from the output
     return user; //if now use user.save() // password filed will deleted
   },

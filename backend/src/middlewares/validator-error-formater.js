@@ -1,5 +1,5 @@
 const { validationResult } = require('express-validator');
-const { ServerError, ValidationError } = require('../../utils/app-error');
+const { ServerError, ValidationError } = require('../utils/app-error');
 
 const formatExpressValidatorError = (req, res, next) => {
   try {
@@ -8,7 +8,7 @@ const formatExpressValidatorError = (req, res, next) => {
     if (result.errors.length) {
       return next(new ValidationError(result.array()))
     }
-  
+
     next();
   } catch (error) {
     throw new ServerError(error, "Validation Result Checking Fail")

@@ -4,9 +4,10 @@ module.exports = {
     username: 'postgres',
     password: '123456',
     database: 'build_api',
-    dialect: 'postgres'
+    dialect: 'postgres',
+    logging: false
   },
-  test: {
+  staging: {
     host: 'localhost',
     username: 'postgres',
     password: '123456',

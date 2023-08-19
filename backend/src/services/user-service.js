@@ -1,4 +1,4 @@
-const { UserRepository } = require("../database/repository")
+const { UserRepository } = require("../repository")
 
 const UserService = {
   async getAllUser(req) {

@@ -1,8 +1,8 @@
 const { promisify } = require('util')
 const jwt = require('jsonwebtoken');
-const { AppError } = require('../../utils/app-error');
-const { UserRepository } = require("../../database/repository");
-const { StatusCode } = require('../../constant');
+const { AppError } = require('../utils/app-error');
+const { UserRepository } = require("../repository");
+const { StatusCode } = require('../constant');
 
 module.exports = async (req, res, next) => {
   try {

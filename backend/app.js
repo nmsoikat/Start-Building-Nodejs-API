@@ -1,12 +1,12 @@
 const express = require('express')
 const morgan = require('morgan')
 const helmet = require('helmet')
-const mongoSanitize = require('express-mongo-sanitize')
+// const mongoSanitize = require('express-mongo-sanitize')
 const xssClean = require('xss-clean')
 const hpp = require('hpp')
 const cors = require('cors');
 
-const { routes } = require('./src/api')
+const routes = require('./src/routes')
 const AppErrorHandler = require('./src/utils/app-error-handler')
 const { AppError } = require('./src/utils/app-error')
 
@@ -15,7 +15,7 @@ const app = express()
 //Global Middleware
 app.use(helmet({ crossOriginResourcePolicy: false }))//Set Security HTTP headers
 //app.use(helmet({ crossOriginResourcePolicy: false }))
-app.use(mongoSanitize())// Input Data Sanitization against NoSQL Query Injection
+// app.use(mongoSanitize())// Input Data Sanitization against NoSQL Query Injection
 app.use(xssClean())// Input Data Sanitization against XSS //clean malicious html or script in html code //add before any route
 app.use(hpp({
   //allow some duplicate query-params //if need

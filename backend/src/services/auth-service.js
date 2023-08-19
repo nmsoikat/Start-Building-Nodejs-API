@@ -1,18 +1,18 @@
 const { StatusCode } = require('../constant');
-const { UserRepository } = require('../database/repository');
+const { UserRepository } = require('../repository');
 const { CheckDataIsEmpty, GenerateSalt, GenerateHashedPassword, CompareHashedPassword, GenerateSignature } = require('../utils');
 const { AppError } = require('../utils/app-error');
 
 const AuthService = {
 
-  async signup(data) {
-    const { username, email, password } = data;
+  async signup(req) {
+    const { first_name, last_name, email, password } = req.body;
 
     const salt = await GenerateSalt()
-
     const passwordHashed = await GenerateHashedPassword(password, salt)
 
-    const user = await UserRepository.createUser({ username, email, password: passwordHashed })
+    const data = { first_name, last_name, email, password: passwordHashed };
+    const user = await UserRepository.createUser(data)
 
     return CheckDataIsEmpty(user);
   },

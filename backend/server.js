@@ -1,18 +1,18 @@
 require('dotenv').config()
-const { connect } = require('mongoose')
+const db = require('./src/db/models')
+// //Before app
+// process.on('uncaughtException', (err) => {
+//   console.log("UNCAUGHT EXCEPTION: SHUTING DOWN...");
+//   console.log(err.name, err.message);
 
-//Before app
-process.on('uncaughtException', (err) => {
-  console.log("UNCAUGHT EXCEPTION: SHUTING DOWN...");
-  console.log(err.name, err.message);
-
-  process.exit(1)
-})
+//   process.exit(1)
+// })
 
 const app = require('./app')
 const port = process.env.PORT || 1000
+
 let serverListen = null
-connect(process.env.MONGODB_URI)
+db.sequelize.authenticate()
   .then(() => {
     console.log("Database connected!");
     serverListen = app.listen(port, () => {
@@ -24,12 +24,12 @@ connect(process.env.MONGODB_URI)
     console.log(err);
   })
 
-process.on('unhandledRejection', (err) => {
-  console.log("UNHANDLED REJECTION: SHUTING DOWN...");
-  console.log(err.name, err.message);
-  serverListen.close(() => {
-    //0 -> success
-    //1 -> uncaughtException
-    process.exit(1)
-  })
-})
+// process.on('unhandledRejection', (err) => {
+//   console.log("UNHANDLED REJECTION: SHUTING DOWN...");
+//   console.log(err.name, err.message);
+//   serverListen.close(() => {
+//     //0 -> success
+//     //1 -> uncaughtException
+//     process.exit(1)
+//   })
+// })

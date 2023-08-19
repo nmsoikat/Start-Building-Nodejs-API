@@ -12,10 +12,9 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-
-    return queryInterface.bulkInsert('Users', [{
-      firstName: 'John',
-      lastName: 'Doe',
+    return await queryInterface.bulkInsert('users', [{
+      first_name: 'John',
+      last_name: 'Doe',
       email: 'example@example.com',
       createdAt: new Date(),
       updatedAt: new Date()
@@ -29,6 +28,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    return queryInterface.bulkDelete('Users', null, {});
+    return await queryInterface.bulkDelete('users', null, {});
   }
 };

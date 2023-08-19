@@ -1,6 +1,6 @@
 const { body } = require('express-validator')
-const { UserRepository } = require('../../database/repository');
-const { ServerError } = require('../../utils/app-error');
+const { UserRepository } = require('../repository');
+const { ServerError } = require('../utils/app-error');
 
 const commonSchema = [
   body('password').isLength({ min: 6 }).withMessage("Password will be at least 6 character long"),
